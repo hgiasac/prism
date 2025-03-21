@@ -3,6 +3,8 @@ FROM node:18 AS compiler
 WORKDIR /usr/src/prism
 
 ARG YARN_NETWORK_TIMEOUT=48000
+RUN npm config rm proxy
+RUN npm config rm https-proxy
 
 COPY package.json yarn.lock /usr/src/prism/
 COPY packages/ /usr/src/prism/packages/
@@ -15,6 +17,8 @@ FROM node:18 AS dependencies
 WORKDIR /usr/src/prism/
 
 ARG YARN_NETWORK_TIMEOUT=48000
+RUN npm config rm proxy
+RUN npm config rm https-proxy
 
 COPY package.json /usr/src/prism/
 RUN mkdir -p /usr/src/prism/node_modules
