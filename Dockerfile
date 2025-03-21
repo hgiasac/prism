@@ -9,7 +9,7 @@ RUN npm config rm https-proxy
 COPY package.json yarn.lock /usr/src/prism/
 COPY packages/ /usr/src/prism/packages/
 
-RUN yarn --network-timeout $YARN_NETWORK_TIMEOUT && yarn build
+RUN npm install && npm run build
 
 ###############################################################
 FROM node:18 AS dependencies
@@ -36,7 +36,7 @@ COPY packages/cli/package.json /usr/src/prism/packages/cli/
 RUN mkdir -p /usr/src/prism/packages/cli/node_modules
 
 ENV NODE_ENV production
-RUN yarn --network-timeout $YARN_NETWORK_TIMEOUT --production
+RUN yarn install --production
 
 RUN if [ $(uname -m) != "aarch64" ]; then curl -sfL https://gobinaries.com/tj/node-prune | bash; fi
 RUN if [ $(uname -m) != "aarch64" ]; then node-prune; fi
